@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
 import { loginUser, registerNewUser } from "../services/auth"
+import { handleHttp } from "../utils/error.handle";
+import { RequestExt } from "../interfaces/request-extended.interfaces";
 
  const registerCtrl = async({ body }:Request, res:Response) => {
     const responseUser = await registerNewUser(body);
@@ -17,4 +19,15 @@ import { loginUser, registerNewUser } from "../services/auth"
    }
  };
 
- export { loginCtrl, registerCtrl };
+ const checkSession = async(req:RequestExt, res:Response)=> {
+   try{
+      res.send({
+         data: 'CORRECT_SESSION_CHECK',
+         user:req.user,
+      });
+   }catch (e) {
+      handleHttp(res, "ERROR_DURING_SESSION_CHECK"); 
+   }
+ };
+
+ export { loginCtrl, registerCtrl, checkSession };
