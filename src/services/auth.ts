@@ -21,7 +21,7 @@ import { generateToken } from "../utils/jwt.handle";
 
    if(!isCorrect) return "PASSWORD_INCORRECT";
 
-   const token = generateToken(checkIs.email);
+   const token = generateToken(checkIs._id.toString());
    
    const data = {
     token,
