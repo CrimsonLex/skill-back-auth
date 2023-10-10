@@ -14,12 +14,12 @@ import { generateToken } from "../utils/jwt.handle";
 
  const loginUser = async( { email, password }: Auth) => {
    const checkIs = await UserModel.findOne({ email });
-   if(!checkIs) return "NOT_FOUND_USER";
+   if(!checkIs) return "AUTH_FAILED";
 
    const passwordHash = checkIs.password;
    const isCorrect = await verified(password, passwordHash);
 
-   if(!isCorrect) return "PASSWORD_INCORRECT";
+   if(!isCorrect) return "AUTH_FAILED";
 
    const token = generateToken(checkIs._id.toString());
    
