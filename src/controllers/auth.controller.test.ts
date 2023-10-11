@@ -106,21 +106,15 @@ describe('authController', () => {
     
 describe("checkSession", () => {
     it("should respond with the correct session data", async () => {
-        // Create a mock RequestExt object with user data
         const req: RequestExt = mockRequest({
           _id: "user123",
           email: "test@example.com",
           name: "Test User",
-          // Add other user properties here
         });
-    
-        // Create a mock Response object
         const res: Partial<Response> = {
           send: jest.fn(),
           status: jest.fn().mockReturnThis(),
         };
-    
-    
         await checkSession(req, res as Response); 
         expect(res.status).toHaveBeenCalledWith(200);
         expect(res.send).toHaveBeenCalledWith({
