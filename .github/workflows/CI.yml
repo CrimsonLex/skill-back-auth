@@ -7,8 +7,7 @@ on:
             - develop
             - main
             - feature/authWithEmail
-        
-    pull request:
+    pull_request:
 
 jobs:
     ci-test:
