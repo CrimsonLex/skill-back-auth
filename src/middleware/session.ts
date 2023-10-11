@@ -7,8 +7,8 @@ import { RequestExt } from "../interfaces/request-extended.interfaces";
 const checkJwt = (req:RequestExt, res:Response, next:NextFunction) => {
     try{
         const jwtByUser = req.headers.authorization || '';
-        const jwt = jwtByUser.split(" ").pop();
-        const isUser = verifyToken(`${jwt}`);
+        const jwt = jwtByUser.split(" ").pop() || '';
+        const isUser = verifyToken(jwt);
         if(!isUser){
             res.status(401);
             res.send("NO_VALID_JWT_SESSION");
