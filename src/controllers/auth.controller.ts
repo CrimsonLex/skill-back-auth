@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { loginUser, registerNewUser } from "../services/auth"
+import { loginUser, registerNewUser } from "../services/auth.service"
 import { handleHttp } from "../utils/error.handle";
 import { RequestExt } from "../interfaces/request-extended.interfaces";
 

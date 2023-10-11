@@ -1,5 +1,5 @@
 import { Request, Response, Router } from "express";
-import {registerCtrl ,loginCtrl, checkSession } from "../controllers/auth"
+import {registerCtrl ,loginCtrl, checkSession } from "../controllers/auth.controller"
 import { checkJwt } from "../middleware/session";
 
 const router = Router();

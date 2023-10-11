@@ -1,12 +1,12 @@
 import { Request, Response } from 'express';
-import { registerCtrl, loginCtrl, checkSession } from './auth';
-import { registerNewUser, loginUser } from '../services/auth';
-import * as authServices from '../services/auth';
+import { registerCtrl, loginCtrl, checkSession } from './auth.controller';
+import { registerNewUser, loginUser } from '../services/auth.service';
+import * as authServices from '../services/auth.service';
 import { RequestExt } from '../interfaces/request-extended.interfaces';
 import { JwtPayload } from 'jsonwebtoken';
 
 
-jest.mock('../services/auth');
+jest.mock('../services/auth.service');
 const mockRequest = (userData: object): RequestExt => {
     return {
       user: userData,
@@ -23,6 +23,7 @@ describe('authController', () => {
           status: jest.fn().mockReturnThis(),
           send: jest.fn(),
         } as unknown as Response;
+        
         (authServices.registerNewUser as jest.Mock).mockResolvedValue({
             _id: '123',
             email: 'test@example.com',
@@ -38,29 +39,23 @@ describe('authController', () => {
           });
         });
         it("should return a 400 status and 'ALREADY_USER' message when registration fails", async () => {
-            // Create a mock Request object with user data
-            const req: Request = {
+          const req: Request = {
               body: {
-                email: "existing@example.com",
-                password: "password123",
-                name: "Existing User",
+                  email: "existing@example.com",
+                  password: "password123",
+                  name: "Existing User",
               },
-            } as Request;
-        
-            // Create a mock Response object
-            const res: Partial<Response> = {
+          } as Request;
+          const res: Partial<Response> = {
               send: jest.fn(),
               status: jest.fn().mockReturnThis(),
-            };
-        
-            // Call the registerCtrl function with the mock objects
-            await registerCtrl(req, res as Response);
-        
-            // Assert that the response contains the expected status and message
-            expect(res.status).toHaveBeenCalledWith(400);
-            expect(res.send).toHaveBeenCalledWith("ALREADY_USER");
-          });
-
+          };
+      
+          (authServices.registerNewUser as jest.Mock).mockResolvedValue("ALREADY_USER");
+          await registerCtrl(req, res as Response);
+          expect(res.status).toHaveBeenCalledWith(400);
+          expect(res.send).toHaveBeenCalledWith("ALREADY_USER");
+      });
     });
     describe('loginCtrl', () => {
         it('should return a response when login is successful', async () => {

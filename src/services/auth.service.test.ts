@@ -1,4 +1,4 @@
-import { registerNewUser, loginUser } from './auth';
+import { registerNewUser, loginUser } from './auth.service';
 import UserModel from '../models/user';
 import * as bcryptHandle from '../utils/bcrypt.handle';
 import * as jwtHandle from '../utils/jwt.handle';
