@@ -8,6 +8,9 @@ on:
             - main
             - feature/authWithEmail
     pull_request:
+env:
+  JWT_SECRET: ${{secrets.JWT_SECRET}}
+
 
 jobs:
     ci-test:
