@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { registerCtrl, loginCtrl, checkSession } from './auth.controller';
 import { registerNewUser, loginUser } from '../services/auth.service';
 import * as authServices from '../services/auth.service';
-import { RequestExt } from '../interfaces/request-extended.interfaces';
+import { RequestExt } from '../interfaces/request-extended.interface';
 import { JwtPayload } from 'jsonwebtoken';
 
 

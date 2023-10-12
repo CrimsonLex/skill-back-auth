@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { verifyToken } from "../utils/jwt.handle";
 import { JwtPayload } from "jsonwebtoken";
-import { RequestExt } from "../interfaces/request-extended.interfaces";
+import { RequestExt } from "../interfaces/request-extended.interface";
 
 
 const checkJwt = (req:RequestExt, res:Response, next:NextFunction) => {

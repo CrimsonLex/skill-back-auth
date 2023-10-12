@@ -5,5 +5,5 @@ module.exports = {
     moduleFileExtensions: ['ts', 'js', 'json', 'node'],
     verbose:true,
     forceExit: true,
-    //clearMock: true,
+    clearMocks: true,
   };

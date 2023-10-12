@@ -1,49 +1,40 @@
 import { Request, Response } from "express";
 import { loginUser, registerNewUser } from "../services/auth.service"
 import { handleHttp } from "../utils/error.handle";
-import { RequestExt } from "../interfaces/request-extended.interfaces";
+import { RequestExt } from "../interfaces/request-extended.interface";
+import { ResponseMessage } from "../common/constants";
 
- const registerCtrl = async({ body }:Request, res:Response) => {
-    const responseUser = await registerNewUser(body);
-    if(responseUser === 'ALREADY_USER'){
-      res.status(400);
-      res.send(responseUser)
-    }else{
-      res.status(201)
-      res.send(responseUser); 
+const registerCtrl = async ({ body }: Request, res: Response) => {
+  const responseUser = await registerNewUser(body);
+  if (responseUser === ResponseMessage.ALREADY_USER) {
+    return res.status(400).send(responseUser);
+  }
+  res.status(201).send(responseUser);
+};
+
+const loginCtrl = async ({ body }: Request, res: Response) => {
+  const { email, password } = body;
+  const responseUser = await loginUser({ email, password });
+  if (responseUser === ResponseMessage.AUTH_FAILED) {
+    return res.status(401).send(responseUser);
+  }
+  res.status(200).send(responseUser);
+
+};
+
+const checkSession = async (req: RequestExt, res: Response) => {
+  try {
+    if (!req.user) {
+      return res.status(401).send(ResponseMessage.ERROR_DURING_SESSION_CHECK);
     }
- };
 
- const loginCtrl = async({ body }:Request, res:Response) => {
-   const { email, password } = body; 
-   const responseUser = await loginUser({ email, password });
-   if (responseUser !== 'AUTH_FAILED'){
-      res.status(200); 
-      res.send(responseUser);
-   }else{
-      res.status(401);
-      res.send(responseUser);
-   }
- };
-
- const checkSession = async(req:RequestExt, res:Response)=> {
-   try{
-      if (!req.user) {
-         res.status(401);
-         res.send("ERROR_DURING_SESSION_CHECK");
-         return;
-       }
-   
-       res.status(200);
-       res.send({
-         data: "CORRECT_SESSION_CHECK",
-         user: req.user,
-       });
-      
-   }catch (e) {
-      res.status(401);
-      handleHttp(res, "ERROR_DURING_SESSION_CHECK"); 
-   }
- };
-
- export { loginCtrl, registerCtrl, checkSession };
+    res.status(200).send({
+      data: ResponseMessage.CORRECT_SESSION_CHECK,
+      user: req.user,
+    });
+  } catch (e) {
+    res.status(401).send(ResponseMessage.ERROR_DURING_SESSION_CHECK);
+    handleHttp(res, ResponseMessage.ERROR_DURING_SESSION_CHECK);
+  }
+};
+export { loginCtrl, registerCtrl, checkSession };
